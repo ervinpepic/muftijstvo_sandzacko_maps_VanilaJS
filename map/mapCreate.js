@@ -1,14 +1,21 @@
 function initMap() {
+
   var map = new google.maps.Map(document.getElementById("map-canvas"), {
     zoom: 9,
-    center: new google.maps.LatLng(43.0806892,19.5989368),
+    center: new google.maps.LatLng(43.0806892, 19.5989368),
     mapId: "5bfe3f5c26ab0efb",
   });
-  
+
   var infowindow = new google.maps.InfoWindow();
-  //add markers to the map
+  var marker_icon = {
+    url: "static/images/marker_main.svg",
+    scaledSize: new google.maps.Size(50, 50),
+    labelOrigin: new google.maps.Point(20, -13),
+  };
+
+
   function zoomChange(polygonName) {
-    google.maps.event.addListener(map, "zoom_changed", function() {
+    google.maps.event.addListener(map, "zoom_changed", function () {
       if (map.getZoom() > 13) polygonName.setMap(null);
       else polygonName.setMap(map);
     });
@@ -17,26 +24,23 @@ function initMap() {
   var markers = marker_locations.map(function (location) {
     var marker = new google.maps.Marker({
       position: location.LatLng[0],
+      icon: marker_icon,
       label: {
         text: location.placeName,
-        color: "white",
-        className: "marker-label"
-      },
-      icon: {
-        url: "static/images/marker_main.svg",
-        origin: new google.maps.Point(0, 0),
-        scaledSize: new google.maps.Size(50, 50),
-        labelOrigin: new google.maps.Point(-1, -1)
+        fontSize: "12pt",
+        color: "#FFFFFF",
+        className: "marker-label-default",
       },
       draggable: true,
       animation: google.maps.Animation.DROP,
     });
+    
+    //event listener for info windows on markers, zooming in and out when click X on info window
     google.maps.event.addListener(infowindow, "closeclick", function () {
       map.panTo(this.getPosition());
-      map.setZoom(map.getZoom()- 0.5);
+      map.setZoom(map.getZoom() - 0.5);
     });
-    
-    //event listener for markers
+    //events lsitener for marker when click on it
     google.maps.event.addListener(marker, "click", function (event) {
       infowindow.setContent(setContent(location));
       infowindow.open(map, marker);
@@ -44,26 +48,39 @@ function initMap() {
     });
     google.maps.event.addListener(marker, "mouseover", function (event) {
       marker.setIcon({
-        url: "static/images/marker_main.svg",
+        url: marker_icon.url,
         scaledSize: new google.maps.Size(100, 100),
+        labelOrigin: new google.maps.Point(50, -22),
       });
-      var label = this.getLabel();
-      label.color = "blue";
-      this.setLabel(label);
+      function markerLabelHover(label){
+        label = marker.getLabel();
+        label.color = "#0d7070";
+        label.fontSize = "20pt";
+        label.className = "marker-label-mouseover";
+        return label
+      }
+      marker.setLabel(markerLabelHover());
     });
     google.maps.event.addListener(marker, "mouseout", function (event) {
       marker.setIcon({
-        url: "static/images/marker_main.svg",
-        scaledSize: new google.maps.Size(50, 50),
+        url: marker_icon.url,
+        scaledSize: marker_icon.scaledSize,
+        labelOrigin: new google.maps.Point(20, -13),
       });
-      var label = this.getLabel();
-      label.color = "black";
-      this.setLabel(label);
+      function markerLabelOut(label){
+        label = marker.getLabel();
+        label.color = "#FFFFFF";
+        label.fontSize = "12pt";
+        label.className = "marker-label-default";
+        return label
+      }
+      marker.setLabel(markerLabelOut());
+
     });
     google.maps.event.addListener(map, "click", function () {
       infowindow.close();
       marker.open = false;
-      map.setZoom(map.getZoom()- 0.5);
+      map.setZoom(map.getZoom() - 0.5);
     });
 
     function toggleBounce() {
@@ -76,7 +93,7 @@ function initMap() {
         }, 1000); // current maps duration of one bounce (v3.13)
       }
     }
-    google.maps.event.addListener(marker, "click", function (event) {
+    google.maps.event.addListener(marker, "click", function () {
       toggleBounce();
     });
 
@@ -109,7 +126,6 @@ function initMap() {
   });
   tutinPolygon.setMap(map);
   zoomChange(tutinPolygon);
-
 
   var sjenicaPolygon = new google.maps.Polygon({
     paths: sjenicaDelimiter,
@@ -221,6 +237,5 @@ function initMap() {
   pljevljaPolygon.setMap(map);
   zoomChange(pljevljaPolygon);
 
-  
   google.maps.event.addDomListener(window, "load", initMap);
 }

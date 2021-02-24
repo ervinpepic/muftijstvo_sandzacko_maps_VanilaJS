@@ -14,9 +14,15 @@
   max-width: fit-content;
 }
 
-.marker-label {
-  background-color: black;
+.marker-label-default {
+  font-family: 'Raleway', sans-serif;
+  background:#0d7070;
   border-radius: 5px;
-  margin-top: 0;
-
+  padding: 5px;
+}
+.marker-label-mouseover {
+  font-family: 'Raleway', sans-serif;
+  background:#FFFFFF;
+  border-radius: 5px;
+  padding: 5px;
 }
