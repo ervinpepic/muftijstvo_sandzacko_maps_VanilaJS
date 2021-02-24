@@ -1,5 +1,4 @@
 function initMap() {
-
   var map = new google.maps.Map(document.getElementById("map-canvas"), {
     zoom: 9,
     center: new google.maps.LatLng(43.0806892, 19.5989368),
@@ -12,7 +11,6 @@ function initMap() {
     scaledSize: new google.maps.Size(50, 50),
     labelOrigin: new google.maps.Point(20, -13),
   };
-
 
   function zoomChange(polygonName) {
     google.maps.event.addListener(map, "zoom_changed", function () {
@@ -34,7 +32,7 @@ function initMap() {
       draggable: true,
       animation: google.maps.Animation.DROP,
     });
-    
+
     //event listener for info windows on markers, zooming in and out when click X on info window
     google.maps.event.addListener(infowindow, "closeclick", function () {
       map.panTo(this.getPosition());
@@ -52,12 +50,12 @@ function initMap() {
         scaledSize: new google.maps.Size(100, 100),
         labelOrigin: new google.maps.Point(50, -22),
       });
-      function markerLabelHover(label){
+      function markerLabelHover(label) {
         label = marker.getLabel();
         label.color = "#0d7070";
         label.fontSize = "20pt";
         label.className = "marker-label-mouseover";
-        return label
+        return label;
       }
       marker.setLabel(markerLabelHover());
     });
@@ -67,15 +65,14 @@ function initMap() {
         scaledSize: marker_icon.scaledSize,
         labelOrigin: new google.maps.Point(20, -13),
       });
-      function markerLabelOut(label){
+      function markerLabelOut(label) {
         label = marker.getLabel();
         label.color = "#FFFFFF";
         label.fontSize = "12pt";
         label.className = "marker-label-default";
-        return label
+        return label;
       }
       marker.setLabel(markerLabelOut());
-
     });
     google.maps.event.addListener(map, "click", function () {
       infowindow.close();
