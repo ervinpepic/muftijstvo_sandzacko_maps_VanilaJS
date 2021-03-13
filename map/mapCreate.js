@@ -26,7 +26,7 @@ function initMap() {
       label: {
         text: location.placeName,
         fontSize: "12pt",
-        color: "#FFFFFF",
+        color: "#000000",
         className: "marker-label-default",
       },
       draggable: true,
@@ -42,7 +42,8 @@ function initMap() {
     google.maps.event.addListener(marker, "click", function (event) {
       infowindow.setContent(setContent(location));
       infowindow.open(map, marker);
-      map.setCenter(this.getPosition());
+      // map.setCenter(this.getPosition());
+      map.panTo(marker.getPosition());
     });
     google.maps.event.addListener(marker, "mouseover", function (event) {
       marker.setIcon({
@@ -52,7 +53,7 @@ function initMap() {
       });
       function markerLabelHover(label) {
         label = marker.getLabel();
-        label.color = "#0d7070";
+        label.color = "#FFFFFF";
         label.fontSize = "20pt";
         label.className = "marker-label-mouseover";
         return label;
@@ -67,7 +68,7 @@ function initMap() {
       });
       function markerLabelOut(label) {
         label = marker.getLabel();
-        label.color = "#FFFFFF";
+        label.color = "#000";
         label.fontSize = "12pt";
         label.className = "marker-label-default";
         return label;
@@ -227,7 +228,7 @@ function initMap() {
     paths: pljevljaDelimiter,
     strokeColor: "#000000",
     strokeOpacity: 0.8,
-    strokeWeight: 2,
+    strokeWeight: 1.5,
     fillColor: "#FF0000",
     fillOpacity: 0.35,
   });
