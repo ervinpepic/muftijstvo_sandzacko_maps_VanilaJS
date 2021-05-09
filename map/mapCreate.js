@@ -33,7 +33,7 @@ function initMap() {
       animation: google.maps.Animation.DROP,
     });
 
-    //event listener for info windows on markers, zooming in and out when click X on info window
+    //event listener for info windows on   markers, zooming in and out when click X on info window
     google.maps.event.addListener(infowindow, "closeclick", function () {
       map.panTo(this.getPosition());
       map.setZoom(map.getZoom() - 0.5);
